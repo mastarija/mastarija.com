@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+
+		<title>Demo title ✦ Maštarija</title>
+		<link rel="stylesheet" href="css/main.css">
+	</head>
+
+	<body>
+		<header id="header" class="header">
+			<nav id="nav" class="nav wrap padd">
+				<a id="logo" class="logo" href="#">
+					<img id="logomark" class="logomark" src="img/mastarija.svg" alt="Maštarija Logomark"/>
+					<p id="logotype" class="logotype">Maštarija</p>
+					<p id="tagline">f : C -> R</p>
+				</a>
+
+                <ul id="main-menu" class="menu main-menu">
+                    <li><a href="#">Home</a></li>
+                    <li class="active"><a href="#">Blog</a></li>
+                    <li><a href="#">Work</a></li>
+                    <li><a href="#">Code</a></li>
+                </ul>
+			</nav>
+		</header>
+
+		<main id="main" class="main">
+			<article class="article wrap padd">
+				<header class="header">
+					<h1 class="title">Demo title</h1>
+					<p class="subtitle">Just a test subtitle</p>
+				</header>
+
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris non ligula ante. Maecenas maximus scelerisque leo sed egestas. Morbi vel nulla vitae ligula pulvinar venenatis. In finibus, urna varius viverra accumsan, turpis felis tincidunt enim, ac commodo sapien nibh nec metus. Pellentesque placerat ultricies mi, a molestie orci faucibus id. Aliquam erat volutpat. Praesent a ligula quis ipsum volutpat eleifend sit amet vitae leo.
+                </p>
+
+                <h2>Duis urna orci</h2>
+
+                <p>
+                    Morbi porta ipsum vel nisl consectetur, quis sagittis nulla ultrices. Duis urna orci, sodales ut eros at, egestas iaculis arcu. Maecenas rutrum sagittis porttitor. Pellentesque dapibus vestibulum eros at feugiat. Phasellus et sapien nunc. Mauris tincidunt dolor ut lacus maximus pharetra. Sed quis luctus nulla.
+                </p>
+
+                <p>
+                    Nulla eu turpis orci. Donec sit amet justo at metus tempus dictum. Proin quis molestie diam, a fermentum purus. Morbi eu mauris placerat, eleifend sapien et, dignissim dolor. Etiam feugiat nisi nisl, et gravida nibh consequat quis. Nam ac placerat dolor. Integer eget scelerisque ex, blandit mattis augue.
+                </p>
+
+                <h2>Sed et lectus in tellus</h2>
+
+                <p>
+                    Fusce at malesuada nisl. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed et lectus in tellus tempus finibus. Nulla sed nisl ut felis laoreet gravida ac sit amet eros. Proin egestas in nisi ac tincidunt. Cras eu feugiat sapien, at pretium est. Morbi sagittis, dui et placerat varius, velit erat consectetur orci, ut mollis dolor sem ac diam. Nulla cursus rutrum purus, sed volutpat orci convallis eget. Nam accumsan elementum viverra. Maecenas eleifend enim vel sodales posuere. Praesent non risus convallis, condimentum lacus sed, feugiat elit. Morbi in fermentum neque, id viverra massa. Pellentesque eu tincidunt erat, ut ultrices ligula. Nam porta quis urna eu tincidunt. Curabitur at sem nibh. Nulla facilisi.
+                </p>
+
+                <h3>Donec commodo odio quis velit placerat</h3>
+
+                <pre>
+                	tab :: String
+					tab = "  "
+
+					rec :: Natural -> ( OLabel , Opaque ) -> String
+					rec l ( label , value ) = show label <> " = " <> nl value <> aux ( l + 1 ) value
+					    where nl ( ORecord _ ) = "\n"
+					          nl ( OVector _ ) = "\n"
+					          nl _ = ""
+
+					indent :: Natural -> String -> String
+					indent 0 s = s
+					indent n s = tab <> indent ( n - 1 ) s
+				</pre>
+
+                <p>
+                    Donec commodo odio quis velit placerat, eu accumsan elit lacinia. Maecenas nec fermentum odio. Nullam malesuada pulvinar mauris sit amet semper. Pellentesque posuere malesuada diam, eu tempus diam pretium accumsan. Mauris volutpat interdum ex, sed faucibus odio posuere in. Praesent nisi ex, semper in dapibus nec, vehicula quis est. Aliquam consequat egestas eros non facilisis. Phasellus viverra, tellus a commodo suscipit, odio velit efficitur felis, condimentum suscipit magna nunc et dolor. Proin condimentum justo vel sem lacinia pellentesque. Phasellus molestie ex ex, volutpat sodales leo elementum a. Vivamus auctor scelerisque enim, a cursus est tristique imperdiet. Donec facilisis elit malesuada augue euismod lacinia. Vestibulum quis porta lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed dignissim sem neque, et porta quam sodales eu.
+                </p>
+			</article>
+		</main>
+
+		<footer id="footer" class="footer">
+			<div class="wrap padd">
+				<p>&copy; 2020 Maštarija. All rights reserved.</p>
+			</div>
+		</footer>
+	</body>
+</html>

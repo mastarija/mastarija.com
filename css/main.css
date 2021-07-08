@@ -1,0 +1,53 @@
+@import url( conf.css );
+@import url( core.css );
+@import url( typo.css );
+@import url( menu.css );
+
+html
+{
+    color       : var( --color-text );
+    background  : var( --color-body );
+}
+
+a , h1 , h2 , h3 , h4 , h5 , h6
+{
+    color : var( --color-text-main );
+}
+
+/*UTILS*/
+
+.wrap
+{
+    margin: 0 auto;
+    max-width: 45em;
+}
+
+.padd
+{
+    padding: 2.5em;
+}
+
+/*ELEMS*/
+
+.nav
+{
+    padding: 0 inherit;
+}
+
+.main-menu
+{
+    width: 100%;
+    margin: 0 auto;
+    display: table;
+    table-layout: fixed;
+
+    border: 1px solid var( --outline );
+    border-left: none;
+    border-right: none;
+}
+
+.main-menu > li
+{
+    display: table-cell;
+    text-align: center;
+}
