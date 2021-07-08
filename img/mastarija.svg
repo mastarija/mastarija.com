@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg
+	id="mastarija"
+
+	x="0px"
+	y="0px"
+	viewBox="0 0 500 500"
+
+	version="1.2"
+	baseProfile="tiny"
+
+	xml:space="preserve"
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+>
+	<defs>
+		<mask id="face">
+			<g id="wrap" fill="#000">
+				<rect
+					x="0"
+					y="0"
+					width="500"
+					height="500"
+				/>
+			</g>
+
+			<g id="head" fill="#fff">
+				<path
+					d=
+						"
+						M 250 200
+						L 50 0
+						L 0 395
+						Q 250 605 500 395
+						L 450 0
+						L 250 200
+						"
+				/>
+			</g>
+
+			<g id="eyes" fill="#000" >
+				<circle id="eye-l" cx="135" cy="295" r="100"/>
+				<circle id="eye-r" cx="365" cy="295" r="100"/>
+			</g>
+		</mask>
+	</defs>
+
+	<g id="logo" mask="url(#face)">
+		<!-- LEFT -->
+			<!-- bottom left -->
+			<circle
+				id="circle-b-l"
+				cx="-200"
+				cy="500"
+				r="500"
+				fill="#036e39"
+			/>
+
+			<!-- middle left -->
+			<circle
+				id="circle-m-l"
+				cx="-165"
+				cy="30"
+				r="500"
+				fill="#279747"
+			/>
+
+			<!-- top left -->
+			<circle
+				id="circle-t-l"
+				cx="-250"
+				cy="-220"
+				r="500"
+				fill="#73b844"
+			/>
+
+		<!-- RIGHT -->
+
+			<!-- middle right -->
+			<circle
+				id="circle-m-r"
+				cx="725"
+				cy="250"
+				r="500"
+				fill="#f58120"
+			/>
+
+			<!-- top right -->
+			<circle
+				id="circle-t-r"
+				cx="750"
+				cy="-220"
+				r="500"
+				fill="#fbaf1b"
+			/>
+
+			<!-- bottom right -->
+			<circle
+				id="circle-b-r"
+				cx="680"
+				cy="550"
+				r="500"
+				fill="#ef4027"
+			/>
+	</g>
+
+	<g id="irises" fill="#fff">
+		<polygon id="iris-l" points="3.2,3.2 5,0 6.8,3.2 10,5 6.8,6.8 5,10 3.2,6.8 0,5" transform="translate(115 275) scale(4)" />
+		<polygon id="iris-r" points="3.2,3.2 5,0 6.8,3.2 10,5 6.8,6.8 5,10 3.2,6.8 0,5" transform="translate(345 275) scale(4)" />
+	</g>
+</svg>
