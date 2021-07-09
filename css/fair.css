@@ -1,0 +1,12 @@
+:root
+{
+  --intensity: .1;
+  --contrasts: 0 0 0;
+  --baselines: 255 255 255;
+
+  --color-body: #fafafa;
+  --color-text: #666;
+  --color-text-main: #0e0e0e;
+
+  --outline: rgba( var( --contrasts ) / var( --intensity ) );
+}

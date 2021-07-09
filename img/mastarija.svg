@@ -43,6 +43,8 @@
 				<circle id="eye-r" cx="365" cy="295" r="100"/>
 			</g>
 		</mask>
+
+		<polygon id="iris" fill="#fff" viewbox="0 0 10 10" points="3.2,3.2 5,0 6.8,3.2 10,5 6.8,6.8 5,10 3.2,6.8 0,5" transform-origin="5 5" transform="scale(4)"/>
 	</defs>
 
 	<g id="logo" mask="url(#face)">
@@ -105,7 +107,7 @@
 	</g>
 
 	<g id="irises" fill="#fff">
-		<polygon id="iris-l" points="3.2,3.2 5,0 6.8,3.2 10,5 6.8,6.8 5,10 3.2,6.8 0,5" transform="translate(115 275) scale(4)" />
-		<polygon id="iris-r" points="3.2,3.2 5,0 6.8,3.2 10,5 6.8,6.8 5,10 3.2,6.8 0,5" transform="translate(345 275) scale(4)" />
+		<use x="130" y="290" href="#iris"/>
+		<use x="360" y="290" href="#iris"/>
 	</g>
 </svg>
