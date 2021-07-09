@@ -55,18 +55,18 @@
 				<h3>Donec commodo odio quis velit placerat</h3>
 
 <pre>
-tab :: String
-tab = "  "
-
-rec :: Natural -> ( OLabel , Opaque ) -> String
-rec l ( label , value ) = show label <> " = " <> nl value <> aux ( l + 1 ) value
-	where nl ( ORecord _ ) = "\n"
-		  nl ( OVector _ ) = "\n"
-		  nl _ = ""
-
-indent :: Natural -> String -> String
-indent 0 s = s
-indent n s = tab <> indent ( n - 1 ) s
+<span>tab :: String</span>
+<span>tab = "  "</span>
+<span></span>
+<span>rec :: Natural -> ( OLabel , Opaque ) -> String</span>
+<span>rec l ( label , value ) = show label <> " = " <> nl value <> aux ( l + 1 ) value</span>
+<span>	where nl ( ORecord _ ) = "\n"</span>
+<span>		  nl ( OVector _ ) = "\n"</span>
+<span>		  nl _ = ""</span>
+<span></span>
+<span>indent :: Natural -> String -> String</span>
+<span>indent 0 s = s</span>
+<span>indent n s = tab <> indent ( n - 1 ) s</span>
 </pre>
 
 				<p>
@@ -77,7 +77,7 @@ indent n s = tab <> indent ( n - 1 ) s
 
 		<footer id="footer" class="footer">
 			<div id="copy" class="copy wrap padd">
-				<p>&copy; 2020 Maštarija. All rights reserved.</p>
+				<p>&copy; 2020 <a href="#">Maštarija</a>. All rights reserved.</p>
 			</div>
 		</footer>
 	</body>
