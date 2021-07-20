@@ -80,21 +80,30 @@ u , i , b , strong
     color: var( --color-text-main );
 }
 
+ul
+{
+    list-style-type: square;
+}
 
-::-webkit-scrollbar {
+
+::-webkit-scrollbar
+{
   width: 10px;
   height: 10px;
 }
 
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track
+{
   background: rgba( var( --contrasts ) / calc( .5 * var( --intensity ) ) );
 }
 
-::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb
+{
   background: rgba( var( --contrasts ) / var( --intensity ) );
 }
 
-::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover
+{
   background: rgba( var( --contrasts ) / calc( 5 * var( --intensity ) ));
 }
 
@@ -233,7 +242,10 @@ u , i , b , strong
     display: block;
 }
 
-.article .header::after {
+/* PAGE */
+
+.page_header::after
+{
     width: 1em;
     height: 0;
     margin: 1em auto;
@@ -244,20 +256,90 @@ u , i , b , strong
     border-bottom: 1px solid;
 }
 
-.article .title ,
-.article .subtitle {
+.page_header_title ,
+.page_header_subtitle
+{
     margin: 0;
     text-align: center;
 }
 
-.article .title {
+.page_header_title
+{
     font-variant: small-caps;
     text-transform: capitalize;
 }
 
-.article .subtitle {
+.page_header_subtitle
+{
     font-style: italic;
 }
+
+.page_intro
+{
+    text-align: center;
+}
+
+/* POST LIST */
+
+.post-list
+{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.post-list li
+{
+    position: relative;
+}
+
+.post-list li:before
+{
+    content: '✦';
+    display: block;
+
+    top: .25em;
+    left: -2em;
+    position: absolute;
+
+    color: var(--color-text);
+    transition: 200ms ease color;
+}
+
+.post-list li:hover:before
+{
+    color: var(--color-text-main);
+}
+
+
+.post-list_item::after
+{
+    clear: both;
+    content: '';
+    display: block;
+}
+
+.post-list_item_link
+{
+    display: block;
+    overflow: hidden;
+}
+
+.post-list_item_title
+{
+    float: left;
+    margin: 0;
+    font-size: 1.25em;
+}
+
+.post-list_item_date
+{
+    float: right;
+    font-style: italic;
+    color: var(--color-text);
+}
+
+/* FOOTER */
 
 .copy
 {
