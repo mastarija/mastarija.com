@@ -1,0 +1,5 @@
+packages    : mastarija-com.cabal
+
+constraints : base  >=4.0 && <5
+            , shake >=0.19 && <0.20
+            , slick >=1.1 && <1.2

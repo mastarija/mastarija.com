@@ -300,7 +300,20 @@ ul
 
 .page_intro
 {
-    text-align: center;
+    text-align: justify;
+}
+
+.page_intro:first-letter
+{
+    float: left;
+    font-size: 4em;
+    line-height: 1;
+    width: 4em;
+    height: 4em;
+    margin-right: .25em;
+    color: var( --color-text-main );
+    font-weight: bold;
+    font-style: italic;
 }
 
 .pagination
