@@ -5,3 +5,13 @@
   padding: 0;
   list-style: none;
 }
+
+.menu--h
+{
+  text-align: center;
+}
+
+.menu--h li
+{
+  display: inline-block;
+}

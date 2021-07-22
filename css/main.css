@@ -242,6 +242,30 @@ ul
     display: block;
 }
 
+.tags
+{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    font-size: .75em;
+    text-transform: lowercase;
+    margin-bottom: 1em;
+}
+
+.tags a
+{
+    display: block;
+    border: 1px solid var( --outline );
+    padding: 0 .5em;
+}
+
+.tags li
+{
+    margin-right: 1em;
+}
+
 /* PAGE */
 
 .page_header::after
@@ -279,21 +303,59 @@ ul
     text-align: center;
 }
 
-/* POST LIST */
-
-.post-list
+.pagination
 {
     margin: 0;
     padding: 0;
     list-style: none;
+    text-align: center;
 }
 
-.post-list li
+.pagination li
+{
+    display: inline-block;
+}
+
+.pagination a
+{
+    width: 2em;
+    height: 2em;
+    display: block;
+    line-height: 2em;
+}
+
+.pagination a:hover ,
+.pagination a.active
+{
+    font-weight: bold;
+}
+
+.pagination a:after
+{
+    display: none;
+}
+
+/* POST LIST */
+
+.post-list
+{
+    margin: 2.5em 0;
+    padding: 0;
+    list-style: none;
+}
+
+.post-list > li
 {
     position: relative;
+    border-bottom: 1px solid var( --outline );
 }
 
-.post-list li:before
+.post-list > li:last-child
+{
+    border-bottom: none;
+}
+
+.post-list > li:before
 {
     content: '✦';
     display: block;
@@ -306,13 +368,22 @@ ul
     transition: 200ms ease color;
 }
 
-.post-list li:hover:before
+.post-list > li:hover:before
 {
     color: var(--color-text-main);
 }
 
+.post-list_item a
+{
+    display: block;
+}
 
-.post-list_item::after
+.post-list_item a:after
+{
+    display: none;
+}
+
+.post-list_item:after
 {
     clear: both;
     content: '';
@@ -330,13 +401,39 @@ ul
     float: left;
     margin: 0;
     font-size: 1.25em;
+    line-height: 2em;
 }
+
+.post-list_item_subtitle
+{
+    clear: both;
+    color: var( --color-text );
+    opacity: .5;
+    font-style: italic;
+    margin-top: 0;
+    line-height: 1;
+}
+
 
 .post-list_item_date
 {
     float: right;
     font-style: italic;
     color: var(--color-text);
+    font-size: 1em;
+    line-height: 2.5em;
+    transition: 200ms ease color;
+}
+
+.post-list_item:hover .post-list_item_date
+{
+    color: var( --color-text-main );
+}
+
+.post-list_item_intro
+{
+    clear: both;
+    color: var( --color-text );
 }
 
 /* FOOTER */
