@@ -1,13 +1,19 @@
+{-# LANGUAGE OverloadedStrings #-}
+--
 module Mastarija.Make where
 --
-import Slick
-import Development.Shake ( Action , ShakeOptions (..) , Verbosity (..) , writeFile' , shakeOptions )
+import Slick ( substitute , compileTemplate' , markdownToHTML )
+import Development.Shake ( Action , ShakeOptions (..) , Verbosity (..) , forP , readFile' , writeFile' , shakeOptions , getDirectoryFiles , copyFileChanged )
 import Development.Shake.Classes ()
-import Development.Shake.Forward ( forwardOptions , shakeArgsForward )
-import Development.Shake.FilePath ( (</>) )
+import Development.Shake.Forward ( forwardOptions , shakeArgsForward , cacheAction )
+import Development.Shake.FilePath ( takeBaseName , (</>) , (<.>) )
 --
-import Data.Text ( unpack )
-import Data.Aeson ( toJSON )
+import Data.Text ( Text , pack , unpack )
+import Data.Aeson ( toJSON , fromJSON , withObject , (.:) , (.:?) )
+import Data.Aeson.Types ( Value (..) , Parser (..) , Result (..) , parseEither )
+import Control.Monad.IO.Class ( liftIO )
+import Text.Mustache.Types ( Template )
+import Control.Monad ( void )
 --
 import Mastarija.Data
 --
@@ -17,35 +23,98 @@ root = "www/"
 
 make :: IO ()
 make = do
-  let opts = forwardOptions $ shakeOptions
-        { shakeVerbosity = Verbose
-        , shakeLintInside =
-          [ "src/pages/"
-          , "src/posts/"
-          , "tpl"
-          , "tpl/css"
-          , "tpl/img"
-          , "tpl/jsc"
-          ]
-        }
-  shakeArgsForward opts home
+  opts <- pure shakeOptions
+    { shakeLintInside =
+      [ "tpl/*"
+      , "tpl/css/*"
+      , "tpl/jsc/*"
+      , "src/pages/*"
+      , "src/posts/*"
+      ]
+    }
+  shakeArgsForward opts makeSite
 
-home :: Action ()
-home = do
-  let site = Site
-        { name = "Maštarija"
-        , item = Page
-          { title   = "Home"
-          , short   = "Hello from the abbis"
-          , intro   = "I am an introductory text."
-          , content = "I am the mainest content of them all, and there are no better contents than me!!!!!"
-          }
-        }
+makeSite :: Action ()
+makeSite = do
+  pageT <- compileTemplate' "tpl/page.html"
+  postT <- compileTemplate' "tpl/post.html"
+  blogT <- compileTemplate' "tpl/blog.html"
 
-  homeT <- compileTemplate' "tpl/page.mustache"
-  homeH <- pure $ unpack $ substitute homeT $ toJSON site
+  paths  <- getDirectoryFiles "." [ "src/posts/*.md" ]
+  mposts <- fmap sequence $ forP paths $ \ p -> makePage postT "post" p Nothing
 
-  writeFile' ( root </> "index.html" ) homeH
+  case mposts of
+    Nothing     -> fail "failed to build all posts"
+    Just posts  -> makeBlog blogT posts
 
-blog :: Site [ Page ] -> Action ()
-blog = undefined
+  makeHome pageT "src/pages/home.md"
+  makeWork pageT "src/pages/work.md"
+  makeCode pageT "src/pages/code.md"
+
+  files <- getDirectoryFiles "./tpl/" [ "img//*" , "css//*" , "jsc//*" ]
+  void $ forP files $ \ file ->
+    copyFileChanged ( "tpl" </> file ) ( root </> file )
+
+makeMain :: String -> Template -> FilePath -> Action ()
+makeMain slug tplt path = void $ makePage tplt mempty path $ Just slug
+
+makeHome :: Template -> FilePath -> Action ()
+makeHome = makeMain "index"
+
+makeBlog :: Template -> [ Page ] -> Action ()
+makeBlog tplt list' = cacheAction ( "blog" :: Text ) $ do
+  epage <- loadPage mempty "src/pages/blog.md" Nothing
+  case epage of
+    Left error -> do
+      fail $ unwords [ "failed to build the Blog:" , error ]
+    Right page -> do
+      liftIO $ putStrLn $ unwords [ "built the Blog page" ]
+      writeFile' ( root </> link page ) . unpack $ substitute tplt $ toJSON page
+
+makeWork :: Template -> FilePath -> Action ()
+makeWork = makeMain "work"
+
+makeCode :: Template -> FilePath -> Action ()
+makeCode = makeMain "code"
+
+loadPage :: FilePath -> FilePath -> Maybe String -> Action ( Either String Page )
+loadPage rootPath filePath mslug = do
+  file <- readFile' filePath
+  json <- markdownToHTML $ pack file
+
+  if ( mslug == Just "index" )
+    then liftIO $ print json
+    else pure ()
+
+  slug <- pure $ takeBaseName filePath
+  link <- pure $ rootPath </> maybe slug id mslug <.> "html"
+
+  pure $ parseEither ( parsePage slug link ) json
+
+makePage :: Template -> FilePath -> FilePath -> Maybe String -> Action ( Maybe Page )
+makePage tplt rootPath filePath mslug = cacheAction ( "page" :: Text , filePath ) $ do
+  epage <- loadPage rootPath filePath mslug
+
+  case epage of
+    Left error -> do
+      liftIO $ putStrLn $ unlines
+        [ "failed to build the Page for [" <> filePath <> "]:"
+        , error
+        ]
+      pure Nothing
+
+    Right page -> do
+      writeFile' ( root </> link page ) . unpack $ substitute tplt $ toJSON page
+      pure $ Just page
+
+parsePage :: String -> String -> Value -> Parser Page
+parsePage slug link = withObject "Page" $ \ v -> Page
+  <$> v .: "name"
+  <*> ( pure slug )
+  <*> ( pure link )
+  <*> v .:? "less"
+  <*> v .:? "more"
+  <*> v .: "content"
+  <*> v .: "creator"
+  <*> v .: "pubDate"
+  <*> v .:? "modDate"

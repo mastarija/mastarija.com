@@ -1,2 +1,3 @@
-/dist-newstyle/
-/.shake/
+dist-newstyle/
+.shake/
+www/
