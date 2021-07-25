@@ -34,14 +34,19 @@ make = do
     }
   shakeArgsForward opts makeSite
 
+loadTplt :: FilePath -> Action ( Template , FilePath )
+loadTplt file = do
+  tplt <- compileTemplate' file
+  pure ( tplt , file )
+
 makeSite :: Action ()
 makeSite = do
-  pageT <- compileTemplate' "tpl/page.html"
-  postT <- compileTemplate' "tpl/post.html"
-  blogT <- compileTemplate' "tpl/blog.html"
+  pageT  <- pure "tpl/page.html"
+  postT  <- pure "tpl/post.html"
+  blogT  <- pure "tpl/blog.html"
 
   paths  <- getDirectoryFiles "." [ "src/posts/*.md" ]
-  mposts <- fmap sequence $ forP paths $ \ p -> makePage postT "post" p Nothing
+  mposts <- fmap sequence $ forP paths $ \ p -> makePage postT "blog" p Nothing
 
   case mposts of
     Nothing     -> fail "failed to build all posts"
@@ -55,26 +60,31 @@ makeSite = do
   void $ forP files $ \ file ->
     copyFileChanged ( "tpl" </> file ) ( root </> file )
 
-makeMain :: String -> Template -> FilePath -> Action ()
+makeMain :: String -> FilePath -> FilePath -> Action ()
 makeMain slug tplt path = void $ makePage tplt mempty path $ Just slug
 
-makeHome :: Template -> FilePath -> Action ()
+makeHome :: FilePath -> FilePath -> Action ()
 makeHome = makeMain "index"
 
-makeBlog :: Template -> [ Page ] -> Action ()
-makeBlog tplt list' = cacheAction ( "blog" :: Text ) $ do
+makeBlog :: FilePath -> [ Page ] -> Action ()
+makeBlog tpath list' = cacheAction ( "blog" :: Text ) $ do
+
+  paths  <- getDirectoryFiles "." [ "src/posts/*.md" ]
+  forP paths $ void . readFile'
+
+  tplt <- compileTemplate' tpath
   epage <- loadPage mempty "src/pages/blog.md" Nothing
   case epage of
     Left error -> do
       fail $ unwords [ "failed to build the Blog:" , error ]
     Right page -> do
       liftIO $ putStrLn $ unwords [ "built the Blog page" ]
-      writeFile' ( root </> link page ) . unpack $ substitute tplt $ toJSON page
+      writeFile' ( root </> link page ) . unpack $ substitute tplt $ toJSON $ Blog page list'
 
-makeWork :: Template -> FilePath -> Action ()
+makeWork :: FilePath -> FilePath -> Action ()
 makeWork = makeMain "work"
 
-makeCode :: Template -> FilePath -> Action ()
+makeCode :: FilePath -> FilePath -> Action ()
 makeCode = makeMain "code"
 
 loadPage :: FilePath -> FilePath -> Maybe String -> Action ( Either String Page )
@@ -82,17 +92,14 @@ loadPage rootPath filePath mslug = do
   file <- readFile' filePath
   json <- markdownToHTML $ pack file
 
-  if ( mslug == Just "index" )
-    then liftIO $ print json
-    else pure ()
-
   slug <- pure $ takeBaseName filePath
   link <- pure $ rootPath </> maybe slug id mslug <.> "html"
 
   pure $ parseEither ( parsePage slug link ) json
 
-makePage :: Template -> FilePath -> FilePath -> Maybe String -> Action ( Maybe Page )
-makePage tplt rootPath filePath mslug = cacheAction ( "page" :: Text , filePath ) $ do
+makePage :: FilePath -> FilePath -> FilePath -> Maybe String -> Action ( Maybe Page )
+makePage tpath rootPath filePath mslug = cacheAction ( "page" :: Text , filePath ) $ do
+  tplt  <- compileTemplate' tpath
   epage <- loadPage rootPath filePath mslug
 
   case epage of

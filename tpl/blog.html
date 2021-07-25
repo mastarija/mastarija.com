@@ -2,110 +2,53 @@
 
 <html>
   <head>
-    {{> tpl/head.html}}
+    {{> tpl/head.html }}
   </head>
 
   <body>
-    {{> tpl/header.html}}
+    {{> tpl/header.html }}
 
     <main id="main" class="main">
       <div id="page" class="page wrap padd">
         <header id="page_header" class="page_header">
-          <h1 id="page_header_title" class="page_header_title">Blog</h1>
-          <p id="page_header_subtitle" class="page_header_subtitle">Where new (and old) ideas come to light</p>
+          <h1 id="page_header_title" class="page_header_title">{{ meta.name }}</h1>
+          {{# meta.less }}
+          <p id="page_header_subtitle" class="page_header_subtitle">{{ meta.less }}</p>
+          {{/ meta.less }}
         </header>
 
-        <p id="page_intro" class="page_intro">Mauris vehicula faucibus consectetur. Ut a dolor quis velit elementum sodales eget vitae urna. Mauris pellentesque interdum lorem eu sollicitudin. Fusce non turpis nibh.</p>
+        {{# meta.more }}
+        <p id="page_intro" class="page_intro">{{ meta.more }}</p>
+        {{/ meta.more }}
 
         <ul id="post-list" class="post-list">
-          {{#item}}
+          {{# list }}
           <li>
             <article class="post-list_item">
-              <a href="#" class="post-list_item_link">
+              <a href="{{ link }}" class="post-list_item_link">
                 <header class="post-list_item_header">
-                  <h2 class="post-list_item_title">{{title}}</h2>
+                  <h2 class="post-list_item_title">{{ name }}</h2>
 
                   <time class="post-list_item_date">
-                    <span title="Day" class="post-list_item_date_day">03</span>
-                    <span title="Month" class="post-list_item_date_month">08</span>
-                    <span title="Year" class="post-list_item_date_year">2021</span>
-                  </time>
-                </header>
-              </a>
-            </article>
-          </li>
-          {{/item}}
-          <li>
-            <article class="post-list_item">
-              <a href="#" class="post-list_item_link">
-                <header class="post-list_item_header">
-                      <h2 class="post-list_item_title">Haskell Generics</h2>
-                      <time class="post-list_item_date">
-                        <span title="Day" class="post-list_item_date_day">03</span>
-                        <span title="Month" class="post-list_item_date_month">08</span>
-                        <span title="Year" class="post-list_item_date_year">2021</span>
-                      </time>
-                      <p class="post-list_item_subtitle">Harvesting the trees</p>
-                </header>
-                <p class="post-list_item_intro">Mauris vehicula faucibus consectetur. Ut a dolor quis velit elementum sodales eget vitae urna. Mauris pellentesque interdum lorem eu sollicitudin. Fusce non turpis nibh.</p>
-              </a>
-            </article>
-          </li>
-
-          <li>
-            <article class="post-list_item">
-              <a href="#" class="post-list_item_link">
-                <header>
-                  <h2 class="post-list_item_title">Haskell Generics</h2>
-                  <time class="post-list_item_date">
-                    <span title="Day" class="post-list_item_date_day">03</span>
-                    <span title="Month" class="post-list_item_date_month">08</span>
-                    <span title="Year" class="post-list_item_date_year">2021</span>
+                    <span title="Day" class="post-list_item_date_day">{{ pubDate.dateD }}</span>.<span title="Month" class="post-list_item_date_month">{{ pubDate.dateM }}</span>.<span title="Year" class="post-list_item_date_year">{{ pubDate.dateY }}</span>
                   </time>
 
-                  <p class="post-list_item_subtitle">Harvesting the trees</p>
+                  {{# less }}
+                  <p class="post-list_item_subtitle">{{ less }}</p>
+                  {{/ less }}
                 </header>
+
+                {{# more }}
+                <p class="post-list_item_intro">{{ more }}</p>
+                {{/ more }}
               </a>
             </article>
           </li>
-
-          <li>
-            <article class="post-list_item">
-              <a href="#" class="post-list_item_link">
-                <header>
-                  <h2 class="post-list_item_title">Haskell Generics</h2>
-                  <time class="post-list_item_date">
-                    <span title="Day" class="post-list_item_date_day">03</span>
-                    <span title="Month" class="post-list_item_date_month">08</span>
-                    <span title="Year" class="post-list_item_date_year">2021</span>
-                  </time>
-                </header>
-              </a>
-            </article>
-          </li>
-
-          <li>
-            <article class="post-list_item">
-              <a href="#" class="post-list_item_link">
-                <header class="post-list_item_header">
-                  <h2 class="post-list_item_title">Parsing the generic data</h2>
-                  <time class="post-list_item_date">
-                    <span title="Day" class="post-list_item_date_day">03</span>
-                    <span title="Month" class="post-list_item_date_month">08</span>
-                    <span title="Year" class="post-list_item_date_year">2021</span>
-                  </time>
-
-                  <p class="post-list_item_subtitle">Harvesting the trees</p>
-                </header>
-
-                <p class="post-list_item_intro">Mauris vehicula faucibus consectetur. Ut a dolor quis velit elementum sodales eget vitae urna. Mauris pellentesque interdum lorem eu sollicitudin. Fusce non turpis nibh.</p>
-              </a>
-            </article>
-          </li>
+          {{/ list }}
         </ul>
       </div>
     </main>
 
-    {{> tpl/footer.html}}
+    {{> tpl/footer.html }}
   </body>
 </html>

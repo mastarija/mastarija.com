@@ -2,23 +2,27 @@
 
 <html>
   <head>
-    {{> tpl/head.html}}
+    {{> tpl/head.html }}
   </head>
 
   <body>
-    {{> tpl/header.html}}
+    {{> tpl/header.html }}
     <main id="main" class="main">
       <article id="page" class="page wrap padd">
         <header id="page_header" class="page_header">
-          <h1 id="page_header_title" class="page_header_title">{{ item.title }}</h1>
-          <p id="page_header_subtitle" class="page_header_subtitle">{{ item.short }}</p>
+          <h1 id="page_header_title" class="page_header_title">{{ name }}</h1>
+          {{# less }}
+          <p id="page_header_subtitle" class="page_header_subtitle">{{ less }}</p>
+          {{/ less }}
         </header>
 
-        <p id="page_intro" class="page_intro">{{ item.intro }}</p>
+        {{# more }}
+        <p id="page_intro" class="page_intro">{{ more }}</p>
+        {{/ more }}
 
-        {{ item.content }}
+        {{{ text }}}
       </article>
     </main>
-    {{> tpl/footer.html}}
+    {{> tpl/footer.html }}
   </body>
 </html>

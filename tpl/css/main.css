@@ -56,12 +56,15 @@ pre
     counter-reset: pre-line;
 }
 
-pre span
+pre > span ,
+pre > code > span
 {
     counter-increment: pre-line;
 }
 
-pre span:before
+
+pre > span:before ,
+pre > code > span:before
 {
     width: 2em;
     float: left;
@@ -300,9 +303,11 @@ ul
 
 .page_intro
 {
-    text-align: justify;
+    text-align: center;
+    font-style: italic;
 }
 
+/*
 .page_intro:first-letter
 {
     float: left;
@@ -315,6 +320,7 @@ ul
     font-weight: bold;
     font-style: italic;
 }
+*/
 
 .pagination
 {
