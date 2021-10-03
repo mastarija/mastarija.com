@@ -1,14 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 --
-module Mastarija.Make where
+module Mastarija.Maker where
 --
 import Prelude hiding ( readFile , writeFile )
 --
 import System.Exit ( ExitCode (..) , exitWith )
-import Data.Maybe ( fromJust )
-import Path ( Rel , Dir , parseRelDir )
-import qualified Path as Path ( Path )
-import Path.IO ( copyDirRecur' , removeFile , removeDirRecur , listDir )
+import Path ( parseRelDir )
+import Path.IO ( copyDirRecur' )
 import Lucid ( renderText )
 import Data.Ord ( comparing )
 import Data.Bool ( bool )
@@ -21,24 +19,23 @@ import Data.Aeson ( ToJSON (..) , FromJSON (..) )
 import Data.Aeson.Types ( parseEither )
 import System.FilePath ( normalise , takeBaseName , (</>) )
 import System.Directory ( doesFileExist , doesDirectoryExist , listDirectory , createDirectoryIfMissing , removeDirectoryRecursive )
-import Control.Monad ( void , when , forM , forM_ , filterM , (>=>) )
+import Control.Monad ( when , forM , forM_ , filterM , (>=>) )
 import Control.Monad.IO.Class ( MonadIO (..) )
 import Control.Monad.Trans.Except ( ExceptT (..) , except , throwE , runExceptT )
 import Control.Monad.Trans.Maybe ( MaybeT (..) , maybeToExceptT )
-import Mastarija.Data ( Tag (..) , Link (..) , Slug (..) , Path (..) , Date (..) , Meta (..) , Article (..) , ArticlePage (..) , Website (..) , TheError (..) )
+import Mastarija.Domain ( Tag (..) , Link (..) , Slug (..) , Path (..) , Date (..) , Meta (..) , Article (..) , ArticlePage (..) , Website (..) , TheError (..) )
 import Text.MMark ( render , parse , projectYaml )
 import Text.Microstache ( PName (..) , Template , renderMustache , compileMustacheDir )
 --
 
-make :: IO ()
-make = do
+maker :: IO ()
+maker = do
   let
     mp = fromJust . parseRelDir
 
   tplt <- compileMustacheDir "main" "tpl"
-  rwww <- doesDirectoryExist "www/"
 
-  when rwww $ void $ clean ( mp "www/" )
+  removeDirectoryRecursive "www/"
   createDirectoryIfMissing True "www/"
 
   copyDirRecur' ( mp "tpl/css/" ) ( mp "www/css/" )
@@ -70,15 +67,6 @@ make = do
         MissingDirectory p -> "missing directory : " <> unPath p
       exitWith $ ExitFailure 1
     Right _ -> exitWith ExitSuccess
-  where
-    clean :: Path.Path Rel Dir -> IO ( Maybe () )
-    clean d = runMaybeT $ do
-      ( ds , fs ) <- listDir d
-      forM_ fs removeFile
-      forM_ ds removeDirRecur
-      pure ()
-
-
 
 --
 
@@ -135,13 +123,8 @@ loadArticlePage base path = do
 makeArticlePage :: MonadIO m => Template -> ArticlePage -> ExceptT TheError m ()
 makeArticlePage tplt page = do
   let
-    mp = fromJust . parseRelDir
-    src = unPath $ source $ page
     path = normPath $ "www/" <> ( unLink $ link $ page )
     file = normPath $ path </> "index.html"
 
-  real <- liftIO $ doesDirectoryExist $ src </> "img"
-
   liftIO $ createDirectoryIfMissing True path
-  when real $ liftIO $ copyDirRecur' ( mp $ src </> "img" ) ( mp $ path </> "img" )
   liftIO $ writeFile file $ toStrict $ renderMustache tplt $ toJSON page

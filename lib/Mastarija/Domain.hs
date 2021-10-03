@@ -3,7 +3,7 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE OverloadedStrings #-}
 --
-module Mastarija.Data where
+module Mastarija.Domain where
 --
 import Data.Char ( isDigit )
 import Data.Text ( Text , pack , unpack )

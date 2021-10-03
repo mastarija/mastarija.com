@@ -1,6 +1,6 @@
 module Main where
 --
-import Mastarija.Make
+import Mastarija.Make ( make )
 --
 
 main :: IO ()
