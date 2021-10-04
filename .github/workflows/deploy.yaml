@@ -17,10 +17,7 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.TARGET_PK }}
-          known_hosts: 'dummy'
-
-      - name: Install Known Host
-        run: ssh-keyscan -p 222 -H ${{ secrets.TARGET_HOST }} >> ~/.ssh/known_hosts
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
       - id: haskell
         name: Haskell Setup
