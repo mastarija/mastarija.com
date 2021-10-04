@@ -47,8 +47,8 @@ jobs:
       # - name: Building Project
       #   run: cabal v2-build all $CONFIG
 
-      - name: Building Website
-        run: cabal exec demon
+      # - name: Building Website
+      #   run: cabal exec demon
 
       - name: Uploading Website
         run: sshpass -p ${{secrets.TARGET_PASSWORD}} rsync -Izvr -e "ssh -p 222" --delete ./www/ ${{secrets.TARGET_USER}}@${{secrets.TARGET_HOST}}:/home/reygoch/public_html/mastarija.com/
