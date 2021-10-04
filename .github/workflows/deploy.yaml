@@ -17,7 +17,10 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.TARGET_PK }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          known_hosts: unnecessary
+
+      - name: Add to known hosts
+        run: ssh-keyscan -p 222 -H mastarija.com >>
 
       - id: haskell
         name: Haskell Setup
@@ -44,8 +47,8 @@ jobs:
           key: ${{ runner.os }}-9.0.1-${{ hashFiles( 'cabal.project.freeze' ) }}
           restore-keys: ${{ runner.os }}-9.0.1-
 
-      - name: Building Project
-        run: cabal v2-build all $CONFIG
+      # - name: Building Project
+      #   run: cabal v2-build all $CONFIG
 
       - name: Building Website
         run: cabal exec demon
