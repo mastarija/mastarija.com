@@ -54,4 +54,4 @@ jobs:
         run: cabal exec demon
 
       - name: Uploading Website
-        run: rsync -Izvrn -e ssh --delete ./www/ ${{secrets.TARGET_USER}}@${{secrets.TARGET_HOST}}:/home/reygoch/public_html/mastarija.com/
+        run: rsync -Izvrn -e "ssh -p 222" --delete ./www/ ${{secrets.TARGET_USER}}@${{secrets.TARGET_HOST}}:/home/reygoch/public_html/mastarija.com/
