@@ -1,0 +1,30 @@
+@font-face
+{
+  src: url(Vollkorn/Vollkorn-Regular.woff2) format( 'woff2' );
+  font-style: normal;
+  font-weight: normal;
+  font-family: "Vollkorn";
+}
+
+@font-face
+{
+  src: url(Vollkorn/Vollkorn-Italic.woff2) format( 'woff2' );
+  font-style: italic;
+  font-family: "Vollkorn";
+}
+
+@font-face
+{
+  src: url(Vollkorn/Vollkorn-Bold.woff2) format( 'woff2' );
+  font-style: normal;
+  font-weight: bold;
+  font-family: "Vollkorn";
+}
+
+@font-face
+{
+  src: url(Vollkorn/Vollkorn-BoldItalic.woff2) format( 'woff2' );
+  font-style: italic;
+  font-weight: bold;
+  font-family: "Vollkorn";
+}

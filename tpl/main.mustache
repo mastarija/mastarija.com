@@ -5,22 +5,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
-    <title>{{#article.meta}}{{#caption}}{{.}} / {{/caption}}{{title}}{{/article.meta}} ✦ Maštarija</title>
+    <title>{{#article.meta}}{{title}}{{#caption}} : {{.}}{{/caption}}{{/article.meta}} ✦ Maštarija</title>
     <link rel="stylesheet" href="/css/main.css">
   </head>
 
-  <body>
+  <body data-link="{{link}}">
     <header id="header" class="header">
       <nav id="nav" class="nav wrap padd">
-        <a id="logo" class="logo" href="#" title="Maštarija">
+        <a id="logo" class="logo" href="/" title="Maštarija">
           <img id="logo-mark" class="logo-mark" src="/img/mastarija.svg" alt="Maštarija Logomark"/>
         </a>
 
         <ul id="main-menu" class="menu main-menu">
           <li><a href="/">Home</a></li>
-          <li><a href="/blog">Blog</a></li>
-          <li><a href="/work">Work</a></li>
-          <li><a href="/code">Code</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/code/">Code</a></li>
         </ul>
       </nav>
     </header>
@@ -54,7 +54,7 @@
                       <h2 class="post-list_item_title">{{title}}</h2>
 
                       <time class="post-list_item_date">
-                        <span title="Day" class="post-list_item_date_day">{{ pubDate.d }}</span>.<span title="Month" class="post-list_item_date_month">{{pubDate.m}}</span>.<span title="Year" class="post-list_item_date_year">{{pubDate.y}}</span>
+                        <span title="Day" class="post-list_item_date_day">{{pubDate.d}}</span>.<span title="Month" class="post-list_item_date_month">{{pubDate.m}}</span>.<span title="Year" class="post-list_item_date_year">{{pubDate.y}}</span>
                       </time>
 
                       {{#caption}}<p class="post-list_item_subtitle">{{.}}</p>{{/caption}}

@@ -30,6 +30,9 @@ import Text.MMark ( render , parse , projectYaml )
 import Text.Microstache ( PName (..) , Template , renderMustache , compileMustacheDir )
 --
 
+flat :: ArticlePage -> [ ArticlePage ]
+flat a = a : concatMap flat ( children a )
+
 make :: IO ()
 make = do
   let
@@ -44,12 +47,12 @@ make = do
   copyDirRecur' ( mp "tpl/css/" ) ( mp "www/css/" )
   copyDirRecur' ( mp "tpl/jsc/" ) ( mp "www/jsc/" )
   copyDirRecur' ( mp "tpl/img/" ) ( mp "www/img/" )
+  copyDirRecur' ( mp "tpl/fnt/" ) ( mp "www/fnt/" )
 
   result <- runExceptT $ do
     let
       page = loadArticlePage ( Link "/" ) . Path
       main = \ a -> a { link = Link "/" }
-      flat = \ a -> a : concatMap flat ( children a )
 
     home <- page "src/home"
     blog <- page "src/blog"
@@ -124,11 +127,11 @@ loadArticlePage base path = do
     in
       loadArticlePage lnk pth
   pure $ ArticlePage
-    { link = Link $ unLink base </> unpack ( unSlug slug )
+    { link = Link $ unLink base </> ( unpack ( unSlug slug ) <> "/" )
     , slug = slug
     , source = path
     , article = item
-    , children = sortBy ( \ a b -> comparing ( pubDate . meta . article ) b a ) kids
+    , children = sortBy ( \ a b -> comparing ( pubDate . meta . article ) b a ) $ concatMap flat kids
     , hasChildren = not $ null kids
     }
 
