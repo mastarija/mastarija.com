@@ -19,9 +19,6 @@ jobs:
           key: ${{ secrets.TARGET_PK }}
           known_hosts: unnecessary
 
-      - name: Add to known hosts
-        run: ssh-keyscan -p 222 -H mastarija.com >>
-
       - id: haskell
         name: Haskell Setup
         uses: haskell/actions/setup@v1
