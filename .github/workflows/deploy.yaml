@@ -8,20 +8,44 @@ on:
 jobs:
 
   build:
+    env:
+      CONFIG: "--enable-tests --test-show-details=direct"
 
     runs-on: ubuntu-latest
 
     timeout-minutes: 30
 
     steps:
-      - name: Bearings 1
-        run: ls -la
+      - name: Haskell Setup
+        id: haskell
+        uses: haskell/actions/setup@v1
+        with:
+          ghc-version: "9.0.1"
+          cabal-version: "3.4"
 
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Bearings 2
-        run: ls -la
+      - name: Cabal Update
+        run: cabal v2-update $CONFIG
+
+      - name: Cabal Freeze
+        run: cabal v2-freeze $CONFIG
+
+      - name: Cache Builds
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{ steps.haskell.outputs.cabal-store }}
+            dist-newstyle
+          key: ${{ runner.os }}-9.0.1-${{ hashFiles( 'cabal.project.freeze' ) }}
+          restore-keys: ${{ runner.os }}-9.0.1-
+
+      - name: Building Project
+        run: cabal v2-build all $CONFIG
+
+      - name: Building Website
+        run: cabal exec demon
 
       - name: Deployment
         id: deployment
@@ -30,6 +54,6 @@ jobs:
           DEPLOY_KEY: ${{secrets.SSH_PRIVATE_KEY}}
         with:
           flags: '-Izvrn --delete'
-          src: 'lib/'
+          src: 'www/'
           ssh_options: '-p 222'
           dest: '${{secrets.SERVER_USER}}@${{secrets.SERVER_IP}}:/home/${{secrets.SERVER_USER}}/public_html/mastarija.com/'
