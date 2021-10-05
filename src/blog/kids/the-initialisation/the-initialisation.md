@@ -14,7 +14,7 @@ start writing, and this post will serve as a reminder of that fact.
 
 One big irony here is that I used to work as a web developer. I can't even count
 how many websites I've created or worked on, yet it took me so long to create
-something just for my self.
+something just for myself.
 
 I guess that there's some truth to that old saying:
 
