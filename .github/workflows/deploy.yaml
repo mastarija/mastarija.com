@@ -6,49 +6,30 @@ on:
       - active
 
 jobs:
+
   build:
-    env:
-      CONFIG: "--enable-tests --test-show-details=direct"
 
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.TARGET_PK }}
-          known_hosts: unnecessary
+    timeout-minutes: 30
 
-      - id: haskell
-        name: Haskell Setup
-        uses: haskell/actions/setup@v1
-        with:
-          ghc-version: "9.0.1"
-          cabal-version: "3.4"
+    steps:
+      - name: Bearings 1
+        run: ls -la
 
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Cabal Update
-        run: cabal v2-update $CONFIG
+      - name: Bearings 2
+        run: ls -la
 
-      - name: Cabal Freeze
-        run: cabal v2-freeze $CONFIG
-
-      - name: Cache Builds
-        uses: actions/cache@v2
+      - name: Deployment
+        id: deployment
+        uses: Pendect/action-rsyncer@v1.1.0
+        env:
+          DEPLOY_KEY: ${{secrets.SSH_PRIVATE_KEY}}
         with:
-          path: |
-            ${{ steps.haskell.outputs.cabal-store }}
-            dist-newstyle
-          key: ${{ runner.os }}-9.0.1-${{ hashFiles( 'cabal.project.freeze' ) }}
-          restore-keys: ${{ runner.os }}-9.0.1-
-
-      # - name: Building Project
-      #   run: cabal v2-build all $CONFIG
-
-      # - name: Building Website
-      #   run: cabal exec demon
-
-      - name: Uploading Website
-        run: sshpass -p ${{secrets.TARGET_PASSWORD}} rsync -Izvr -e "ssh -p 222" --delete ./www/ ${{secrets.TARGET_USER}}@${{secrets.TARGET_HOST}}:/home/reygoch/public_html/mastarija.com/
+          flags: '-Izvrn --delete'
+          src: 'lib/'
+          ssh_options: '-p 222'
+          dest: '${{secrets.SERVER_USER}}@${{secrets.SERVER_IP}}:/home/${{secrets.SERVER_USER}}/public_html/mastarija.com/'
